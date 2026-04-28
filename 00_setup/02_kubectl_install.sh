@@ -6,19 +6,18 @@ banner() { echo ""; echo "############################## $1"; echo ""; }
 
 banner "START install kubectl"
 
-# Add kubernetes package repository, this overwrites any existing configuration in /etc/yum.repos.d/kubernetes.repo
-cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.35/rpm/
-enabled=1
-gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.35/rpm/repodata/repomd.xml.key
-EOF
+# Add kubernetes apt repository, this overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key \
+    | sudo gpg --dearmor --yes -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo chmod 0644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' \
+    | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
 
 # Install kubectl (skip if already installed)
 if ! command -v kubectl &>/dev/null; then
-    sudo dnf install -y kubectl
+    sudo apt-get install -y kubectl
 else
     echo "kubectl is already installed: $(kubectl version --client --short 2>/dev/null || kubectl version --client)"
 fi

@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-A collection of numbered bash scripts for setting up and operating Argo Workflows + Argo Events on a local minikube cluster. Intended for RPM-based Linux (uses `dnf`/`rpm`), despite the `ubuntu_` prefix in the directory name. Scripts are designed to be run in numeric order.
+A collection of numbered bash scripts for setting up and operating Argo Workflows + Argo Events on a local minikube cluster. Targets Ubuntu 24.04 (uses `apt`/`dpkg` in the `00_setup/` installers). Scripts are designed to be run in numeric order.
 
 ## Script Execution Order
 
 ### One-time installation (run once per machine)
 ```bash
-bash 00_setup/01_minikube_install.sh       # Install minikube via RPM
-bash 00_setup/02_kubectl_install.sh        # Install kubectl via dnf from k8s.io repo
+bash 00_setup/01_minikube_install.sh       # Install minikube via .deb (dpkg)
+bash 00_setup/02_kubectl_install.sh        # Install kubectl via apt from k8s.io repo
 bash 00_setup/03_argo_cli_install.sh       # Install argo CLI v3.7.9 to ~/.local/bin
 source ~/.bashrc                           # Reload completions after each install
 ```

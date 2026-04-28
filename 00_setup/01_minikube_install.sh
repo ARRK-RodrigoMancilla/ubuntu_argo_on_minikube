@@ -12,8 +12,8 @@ cd "$TMP_DIR"
 
 # Download and install minikube (skip if already installed)
 if ! command -v minikube &>/dev/null; then
-    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
-    sudo rpm -Uvh minikube-latest.x86_64.rpm
+    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+    sudo dpkg -i minikube_latest_amd64.deb
 else
     echo "minikube is already installed: $(minikube version --short)"
 fi
